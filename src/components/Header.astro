@@ -1,24 +1,27 @@
 ---
 import { SITE_TITLE } from "../consts";
 import HeaderLink from "./HeaderLink.astro";
+import Button from "@/components/ui/Button.astro";
 ---
 
 <header>
-  <nav>
-    <h2><a href="/">{SITE_TITLE}</a></h2>
+  <nav aria-label="Main navigation">
+    <a class="brand" href="/" aria-label={`${SITE_TITLE} home`}>
+      atosh<span class="brand-dot">.</span>
+    </a>
 
     <div class="nav-links">
       <div class="internal-links">
-        <HeaderLink href="/">Home</HeaderLink>
         <HeaderLink href="/blog">Blog</HeaderLink>
         <HeaderLink href="/about">About</HeaderLink>
       </div>
 
-      <button
+      <Button
         id="theme-toggle"
+        variant="icon"
+        size="md"
         type="button"
-        aria-label="Switch to light theme"
-        title="Switch theme"
+        ariaLabel="Switch to light theme"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -37,7 +40,7 @@ import HeaderLink from "./HeaderLink.astro";
             d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path
             d="m19.07 4.93-1.41 1.41"></path></svg
         >
-      </button>
+      </Button>
     </div>
   </nav>
 </header>
@@ -97,79 +100,96 @@ import HeaderLink from "./HeaderLink.astro";
 
 <style>
   header {
+    position: relative;
+    padding-inline: var(--page-gutter);
     background: var(--color-background);
-    margin: 0;
-    padding: 0 1rem;
   }
 
-  h2 {
-    margin: 0;
-    font-size: 1em;
+  header::after {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 1px;
+    content: "";
+    overflow: hidden;
   }
 
-  h2 a,
-  h2 a.active {
-    text-decoration: none;
+  header::before {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--color-primary) 45%,
+      var(--color-primary) 50%,
+      transparent 55%
+    );
+    background-size: 200% 100%;
+    content: "";
+    animation: border-glow 6s linear infinite;
+    pointer-events: none;
+  }
+
+  @keyframes border-glow {
+    from {
+      background-position: 100% 0;
+    }
+
+    to {
+      background-position: -100% 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    header::before {
+      animation: none;
+      background: transparent;
+    }
   }
 
   nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 2rem;
+    max-width: 1024px;
+    min-height: 80px;
+    margin-inline: auto;
   }
 
-  nav a {
-    padding: 1em 0.5em;
+  .brand {
+    flex-shrink: 0;
     color: var(--color-foreground);
-    border-bottom: 4px solid transparent;
+    font-family: var(--font-mono);
+    font-size: var(--text-xl);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.025em;
     text-decoration: none;
   }
 
-  nav a.active {
-    text-decoration: none;
-    border-bottom-color: var(--color-primary);
+  .brand-dot {
+    color: var(--color-primary);
   }
 
   .nav-links {
     display: flex;
     align-items: center;
-    gap: var(--space-3);
+    gap: 1rem;
   }
 
   .internal-links {
     display: flex;
     align-items: center;
+    gap: 0.35rem;
   }
 
-  #theme-toggle {
-    display: grid;
-    place-items: center;
-    width: 2.75rem;
-    height: 2.75rem;
-    padding: 0;
-    color: var(--color-foreground);
-    background: transparent;
-    border: var(--border-width) solid var(--color-border);
-    border-radius: var(--radius-full);
-    transition:
-      background-color 150ms ease,
-      transform 100ms ease;
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    #theme-toggle:hover {
-      background-color: var(--color-surface-hover);
-    }
-  }
-
-  #theme-toggle:active {
-    transform: scale(0.94);
-    background-color: var(--color-surface-hover);
-  }
-
-  #theme-toggle:focus-visible {
+  .brand:focus-visible {
     outline: 2px solid var(--color-primary);
-    outline-offset: 3px;
+    outline-offset: 4px;
   }
 
   @keyframes theme-icon-enter {
@@ -188,23 +208,24 @@ import HeaderLink from "./HeaderLink.astro";
     animation: theme-icon-enter 220ms ease-out;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    #theme-toggle {
-      transition: none;
+  @media (max-width: 768px) {
+    nav {
+      min-height: 68px;
+      gap: 0.5rem;
     }
 
-    :global(#theme-toggle svg.theme-icon--animate) {
-      animation: none;
+    .nav-links {
+      gap: 0.35rem;
+    }
+
+    .internal-links {
+      gap: 0;
     }
   }
 
-  @media (max-width: 480px) {
-    .nav-links {
-      gap: 0;
-    }
-
-    nav a {
-      padding-inline: var(--space-2);
+  @media (prefers-reduced-motion: reduce) {
+    :global(#theme-toggle svg.theme-icon--animate) {
+      animation: none;
     }
   }
 </style>

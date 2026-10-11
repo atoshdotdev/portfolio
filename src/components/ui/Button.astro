@@ -1,0 +1,144 @@
+---
+interface Props {
+  href?: string;
+  variant?: "primary" | "secondary" | "icon";
+  size?: "sm" | "md" | "lg";
+  type?: "button" | "submit" | "reset";
+  disabled?: boolean;
+  id?: string;
+  ariaLabel?: string;
+}
+
+const {
+  href,
+  variant = "primary",
+  size = "md",
+  type = "button",
+  disabled = false,
+  id,
+  ariaLabel,
+} = Astro.props;
+
+const className = `button button-${variant} button-${size}`;
+---
+
+{
+  href ? (
+    <a
+      id={id}
+      class={className}
+      href={disabled ? undefined : href}
+      aria-label={ariaLabel}
+      aria-disabled={disabled || undefined}
+      tabindex={disabled ? -1 : undefined}
+    >
+      <slot />
+    </a>
+  ) : (
+    <button
+      id={id}
+      class={className}
+      type={type}
+      disabled={disabled}
+      aria-label={ariaLabel}
+    >
+      <slot />
+    </button>
+  )
+}
+
+<style>
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    border: var(--border-width) solid transparent;
+    border-radius: var(--radius-full);
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-normal);
+    text-decoration: none;
+    transition:
+      background-color 150ms ease,
+      border-color 150ms ease,
+      opacity 150ms ease,
+      transform 100ms ease;
+  }
+
+  .button-sm {
+    --button-height: 36px;
+    min-height: var(--button-height);
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .button-md {
+    --button-height: 44px;
+    min-height: var(--button-height);
+    padding: var(--space-3) 1.1rem;
+  }
+
+  .button-lg {
+    --button-height: 48px;
+    min-height: var(--button-height);
+    padding: var(--space-3) var(--space-6);
+  }
+
+  .button-primary {
+    color: var(--color-primary-foreground);
+    background: var(--color-primary);
+  }
+
+  .button-secondary {
+    color: var(--color-foreground);
+    border-color: var(--color-border);
+    background: transparent;
+  }
+
+  .button-icon {
+    flex-shrink: 0;
+    width: var(--button-height);
+    height: var(--button-height);
+    padding: 0;
+    color: var(--color-foreground);
+    background: transparent;
+    border-color: var(--color-border);
+    border-radius: var(--radius-full);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .button-primary:not(:disabled):not([aria-disabled="true"]):hover {
+      opacity: 0.85;
+    }
+
+    .button-secondary:not(:disabled):not([aria-disabled="true"]):hover,
+    .button-icon:not(:disabled):not([aria-disabled="true"]):hover {
+      background: var(--color-surface-hover);
+    }
+  }
+
+  .button:active:not(:disabled):not([aria-disabled="true"]) {
+    transform: scale(0.97);
+  }
+
+  .button-icon:active:not(:disabled):not([aria-disabled="true"]) {
+    transform: scale(0.94);
+  }
+
+  .button:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 4px;
+  }
+
+  .button:disabled,
+  .button[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .button {
+      transition: none;
+    }
+  }
+</style>
