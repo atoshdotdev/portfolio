@@ -116,9 +116,8 @@ body {
 
 main {
   width: 100%;
-  max-width: var(--content-width);
   margin-inline: auto;
-  padding: var(--space-12) var(--page-gutter);
+  padding-inline: var(--page-gutter);
 }
 
 h1,
@@ -248,7 +247,6 @@ img {
   display: block;
   max-width: 100%;
   height: auto;
-  border-radius: var(--radius-md);
 }
 
 table {
@@ -261,17 +259,13 @@ table {
   outline-offset: 3px;
 }
 
-@media (max-width: 720px) {
+@media (max-width: 768px) {
   :root {
     --page-gutter: 1rem;
   }
 
   body {
     font-size: var(--text-base);
-  }
-
-  main {
-    padding-block: var(--space-8);
   }
 
   h1 {
