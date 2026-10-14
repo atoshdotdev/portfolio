@@ -13,18 +13,6 @@ const { title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.props;
 <!doctype html>
 <html lang="en">
   <head>
-    <script is:inline>
-      try {
-        const theme = localStorage.getItem("theme");
-
-        if (theme === "light" || theme === "dark") {
-          document.documentElement.dataset.theme = theme;
-        }
-      } catch {
-        // Intentionally empty: Retain the default theme.
-      }
-    </script>
-
     <BaseHead title={title} description={description} />
   </head>
 

@@ -1,7 +1,6 @@
 ---
 import { SITE_TITLE } from "../consts";
 import HeaderLink from "./HeaderLink.astro";
-import Button from "@/components/ui/Button.astro";
 ---
 
 <header>
@@ -10,109 +9,20 @@ import Button from "@/components/ui/Button.astro";
       atosh<span class="brand-dot">.</span>
     </a>
 
-    <div class="nav-links">
-      <div class="internal-links">
-        <HeaderLink href="/blog">Blog</HeaderLink>
-        <HeaderLink href="/about">About</HeaderLink>
-      </div>
-
-      <Button
-        id="theme-toggle"
-        variant="icon"
-        size="md"
-        type="button"
-        ariaLabel="Switch to light theme"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="lucide lucide-sun preview-icon"
-          ><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path
-            d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path
-            d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path
-            d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path
-            d="m19.07 4.93-1.41 1.41"></path></svg
-        >
-      </Button>
+    <div class="internal-links">
+      <HeaderLink href="/blog">Blog</HeaderLink>
+      <HeaderLink href="/#about" data-section-link="about">About</HeaderLink>
     </div>
   </nav>
 </header>
 
-<script>
-  const themeToggle =
-    document.querySelector<HTMLButtonElement>("#theme-toggle");
-
-  function getTheme(): "light" | "dark" {
-    return document.documentElement.dataset.theme === "light"
-      ? "light"
-      : "dark";
-  }
-
-  function updateThemeToggle(theme: "light" | "dark") {
-    if (!themeToggle) return;
-
-    const isDark = theme === "dark";
-
-    themeToggle.setAttribute(
-      "aria-label",
-      isDark ? "Switch to light theme" : "Switch to dark theme",
-    );
-
-    themeToggle.innerHTML = isDark
-      ? `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun preview-icon"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>`
-      : `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-moon preview-icon"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>`;
-  }
-
-  themeToggle?.addEventListener("click", () => {
-    const nextTheme = getTheme() === "dark" ? "light" : "dark";
-
-    document.documentElement.dataset.theme = nextTheme;
-    updateThemeToggle(nextTheme);
-
-    const icon = themeToggle.querySelector("svg");
-
-    if (icon) {
-      icon.classList.add("theme-icon--animate");
-
-      icon.addEventListener(
-        "animationend",
-        () => icon.classList.remove("theme-icon--animate"),
-        { once: true },
-      );
-    }
-
-    try {
-      localStorage.setItem("theme", nextTheme);
-    } catch {
-      // Intentionally empty: Theme persistence is optional
-    }
-  });
-
-  updateThemeToggle(getTheme());
-</script>
-
 <style>
   header {
-    position: relative;
+    position: sticky;
+    top: 0;
+    z-index: 100;
     padding-inline: var(--page-gutter);
     background: var(--color-background);
-  }
-
-  header::after {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    height: 1px;
-    content: "";
-    overflow: hidden;
   }
 
   header::before {
@@ -175,57 +85,22 @@ import Button from "@/components/ui/Button.astro";
     color: var(--color-primary);
   }
 
-  .nav-links {
+  .internal-links {
     display: flex;
     align-items: center;
     gap: 1rem;
   }
 
-  .internal-links {
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
-  }
-
   .brand:focus-visible {
+    border-radius: var(--radius-sm);
     outline: 2px solid var(--color-primary);
     outline-offset: 4px;
-  }
-
-  @keyframes theme-icon-enter {
-    from {
-      opacity: 0;
-      transform: rotate(-35deg) scale(0.75);
-    }
-
-    to {
-      opacity: 1;
-      transform: rotate(0) scale(1);
-    }
-  }
-
-  :global(#theme-toggle svg.theme-icon--animate) {
-    animation: theme-icon-enter 220ms ease-out;
   }
 
   @media (max-width: 768px) {
     nav {
       min-height: 68px;
       gap: 0.5rem;
-    }
-
-    .nav-links {
-      gap: 0.35rem;
-    }
-
-    .internal-links {
-      gap: 0;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    :global(#theme-toggle svg.theme-icon--animate) {
-      animation: none;
     }
   }
 </style>
