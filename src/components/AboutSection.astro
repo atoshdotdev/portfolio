@@ -1,0 +1,51 @@
+<section id="about" class="about" aria-labelledby="about-title">
+  <div class="about-content">
+    <h2 id="about-title">A little about me</h2>
+
+    <p>
+      I'm a software engineer who enjoys building practical solutions and
+      understanding how things work under the hood. I like turning complex
+      problems into simple, maintainable software and bringing ideas to life
+      through applications, systems, and tools. I'm always learning,
+      experimenting with new technologies, and looking for ways to become a
+      better engineer.
+    </p>
+  </div>
+</section>
+
+<style>
+  .about {
+    padding-block: var(--space-16);
+    scroll-margin-top: 6rem;
+    width: fit-content;
+    margin: auto;
+    padding-inline: var(--page-gutter);
+  }
+
+  .about-content {
+    width: 100%;
+    max-width: var(--content-width);
+    margin-inline: auto;
+  }
+
+  .about h2 {
+    margin: 0 0 var(--space-4);
+    font-size: var(--text-2xl);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+    letter-spacing: -0.03em;
+  }
+
+  .about p {
+    margin: 0;
+    color: var(--color-muted-foreground);
+    font-size: var(--text-lg);
+    line-height: var(--line-height-relaxed);
+  }
+
+  @media (max-width: 768px) {
+    .about {
+      padding-block: var(--space-12);
+    }
+  }
+</style>
