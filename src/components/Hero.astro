@@ -49,17 +49,18 @@ import Button from "@/components/ui/Button.astro";
     top: 45%;
     left: 50%;
     width: min(1024px, 100vw);
-    height: 600px;
+    height: 520px;
     transform: translate(-50%, -50%);
     background: radial-gradient(
       ellipse at center,
-      color-mix(in oklch, var(--color-accent) 12%, transparent) 0%,
-      color-mix(in oklch, var(--color-accent) 5%, transparent) 35%,
+      color-mix(in oklch, var(--color-accent) 10%, transparent) 0%,
+      color-mix(in oklch, var(--color-accent) 5%, transparent) 30%,
+      color-mix(in oklch, var(--color-accent) 1%, transparent) 55%,
       transparent 70%
     );
     content: "";
     pointer-events: none;
-    animation: glow-breathe 8s ease-in-out infinite alternate;
+    animation: glow-breathe 10s ease-in-out infinite alternate;
   }
 
   @keyframes glow-breathe {
