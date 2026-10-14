@@ -108,12 +108,12 @@ const className = `button button-${variant} button-${size}`;
 
   @media (hover: hover) and (pointer: fine) {
     .button-primary:not(:disabled):not([aria-disabled="true"]):hover {
-      opacity: 0.85;
+      background-color: oklch(from var(--color-primary) l c h / 0.9);
     }
 
     .button-secondary:not(:disabled):not([aria-disabled="true"]):hover,
     .button-icon:not(:disabled):not([aria-disabled="true"]):hover {
-      background: var(--color-surface-hover);
+      background-color: var(--color-muted);
     }
   }
 
