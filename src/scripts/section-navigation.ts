@@ -3,43 +3,139 @@ const sectionLinks = document.querySelectorAll<HTMLAnchorElement>(
 );
 
 if (sectionLinks.length > 0) {
-  const sections = new Map<string, HTMLAnchorElement[]>();
+  const linksBySection = new Map<string, HTMLAnchorElement[]>();
+  const observedSections = new Map<Element, boolean>();
+
+  let manuallySelectedSection: string | null = null;
+  let scrollTimeout: ReturnType<typeof setTimeout> | undefined;
 
   sectionLinks.forEach((link) => {
     const sectionId = link.dataset.sectionLink;
-
     if (!sectionId) return;
 
-    const links = sections.get(sectionId) ?? [];
+    const links = linksBySection.get(sectionId) ?? [];
     links.push(link);
-    sections.set(sectionId, links);
+    linksBySection.set(sectionId, links);
   });
 
-  const options = {
-    rootMargin: "-96px 0px -50% 0px",
-  };
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      const links = sections.get(entry.target.id);
-
-      if (!links) return;
+  const setActiveSection = (activeSectionId: string | null) => {
+    linksBySection.forEach((links, sectionId) => {
+      const isActive = sectionId === activeSectionId;
 
       links.forEach((link) => {
-        link.classList.toggle("active", entry.isIntersecting);
+        link.classList.toggle("active", isActive);
 
-        if (entry.isIntersecting) {
+        if (isActive) {
           link.setAttribute("aria-current", "location");
         } else {
           link.removeAttribute("aria-current");
         }
       });
     });
-  }, options);
+  };
 
-  sections.forEach((_, sectionId) => {
+  const clearManualSelection = () => {
+    manuallySelectedSection = null;
+
+    if (scrollTimeout) {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = undefined;
+    }
+  };
+
+  const selectSectionTemporarily = (sectionId: string) => {
+    manuallySelectedSection = sectionId;
+    setActiveSection(sectionId);
+
+    if (scrollTimeout) clearTimeout(scrollTimeout);
+
+    scrollTimeout = setTimeout(() => {
+      clearManualSelection();
+    }, 1000);
+  };
+
+  sectionLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      const sectionId = link.dataset.sectionLink;
+      if (!sectionId) return;
+
+      selectSectionTemporarily(sectionId);
+    });
+  });
+
+  window.addEventListener("wheel", clearManualSelection, {
+    passive: true,
+  });
+
+  window.addEventListener("touchstart", clearManualSelection, {
+    passive: true,
+  });
+
+  window.addEventListener("keydown", (event) => {
+    if (
+      [
+        "ArrowUp",
+        "ArrowDown",
+        "PageUp",
+        "PageDown",
+        "Home",
+        "End",
+        " ",
+      ].includes(event.key)
+    ) {
+      clearManualSelection();
+    }
+  });
+
+  const activationLine = 96;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        observedSections.set(entry.target, entry.isIntersecting);
+      });
+
+      if (manuallySelectedSection !== null) return;
+
+      const intersectingSections = [...observedSections.entries()]
+        .filter(([, isIntersecting]) => isIntersecting)
+        .map(([section]) => section as HTMLElement)
+        .map((section) => ({
+          section,
+          top: section.getBoundingClientRect().top,
+        }));
+
+      if (intersectingSections.length === 0) {
+        setActiveSection(null);
+        return;
+      }
+
+      const sectionsAboveLine = intersectingSections
+        .filter(({ top }) => top <= activationLine)
+        .sort((a, b) => b.top - a.top);
+
+      const activeSection =
+        sectionsAboveLine[0]?.section ??
+        intersectingSections.reduce((closest, current) =>
+          Math.abs(current.top - activationLine) <
+          Math.abs(closest.top - activationLine)
+            ? current
+            : closest,
+        ).section;
+
+      setActiveSection(activeSection.id);
+    },
+    {
+      rootMargin: "-96px 0px -50% 0px",
+    },
+  );
+
+  linksBySection.forEach((_, sectionId) => {
     const section = document.getElementById(sectionId);
 
-    if (section) observer.observe(section);
+    if (section) {
+      observedSections.set(section, false);
+      observer.observe(section);
+    }
   });
 }
