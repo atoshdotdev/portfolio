@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import ProfilePhoto from "@/assets/images/profile-photo.jpeg";
+import ProfilePhoto from "@/assets/images/profile-photo.webp";
 import Button from "@/components/ui/Button.astro";
 ---
 
@@ -21,7 +21,7 @@ import Button from "@/components/ui/Button.astro";
       </h1>
     </div>
     <div class="hero-actions">
-      <Button variant="primary" href="/projects" size="lg">
+      <Button variant="primary" href="/#projects" size="lg">
         Explore my work
       </Button>
 
@@ -33,7 +33,9 @@ import Button from "@/components/ui/Button.astro";
 <style>
   .hero {
     width: 100%;
+    max-width: var(--content-width-lg);
     min-width: 0;
+    margin: auto;
     position: relative;
     isolation: isolate;
     display: grid;
