@@ -44,8 +44,10 @@
   --space-16: 4rem;
   --space-20: 5rem;
 
-  --content-width: 720px;
-  --content-width-wide: 1080px;
+  --content-width-sm: 48rem;
+  --content-width-md: 64rem;
+  --content-width-lg: 80rem;
+
   --page-gutter: 1.5rem;
 
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 5%);
@@ -74,9 +76,13 @@
 }
 
 *,
-*::before,
-*::after {
+::after,
+::before,
+::backdrop {
   box-sizing: border-box;
+  border: 0 solid;
+  margin: 0;
+  padding: 0;
 }
 
 html {
@@ -96,6 +102,10 @@ body {
   background: var(--color-background);
 }
 
+body.menu-open {
+  overflow: hidden;
+}
+
 main {
   width: 100%;
   margin-inline: auto;
@@ -108,7 +118,7 @@ h3,
 h4,
 h5,
 h6 {
-  margin: 0 0 var(--space-2);
+  margin: 0 0 var(--space-2) 0;
   color: var(--color-foreground);
   font-weight: var(--font-weight-semibold);
   line-height: var(--line-height-tight);
@@ -157,7 +167,7 @@ b {
 }
 
 p {
-  margin: 0 0 var(--space-4);
+  margin: 0 0 var(--space-4) 0;
 }
 
 .prose p {
