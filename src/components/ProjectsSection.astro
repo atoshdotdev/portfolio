@@ -1,0 +1,65 @@
+---
+import ProjectCard from "@/components/ProjectCard.astro";
+import { projects } from "@/data/projects";
+---
+
+<section class="projects" id="projects" aria-labelledby="projects-title">
+  <div class="projects-header">
+    <h2 id="projects-title">Projects</h2>
+
+    <p class="projects-intro">A selection of things I've built.</p>
+  </div>
+
+  <div class="projects-list">
+    {
+      projects.map((project, index) => (
+        <ProjectCard {...project} number={String(index + 1).padStart(2, "0")} />
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .projects {
+    padding-block: var(--space-20);
+    scroll-margin-top: 6rem;
+    width: 100%;
+    max-width: var(--content-width-md);
+    margin: auto;
+  }
+
+  .projects-header {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    margin-bottom: var(--space-12);
+  }
+
+  .projects-intro {
+    margin: 0;
+    font-family: var(--font-mono);
+    color: var(--color-muted-foreground);
+  }
+
+  .projects-list {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  @media (max-width: 768px) {
+    .projects {
+      padding-block: var(--space-16);
+      scroll-margin-top: 5rem;
+    }
+
+    .projects-header {
+      align-items: start;
+      flex-direction: column;
+      margin-bottom: var(--space-8);
+    }
+
+    .projects-list {
+      gap: var(--space-4);
+    }
+  }
+</style>
