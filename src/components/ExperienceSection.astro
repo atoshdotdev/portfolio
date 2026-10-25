@@ -1,0 +1,160 @@
+---
+import { experience } from "@/data/experience";
+---
+
+<section id="experience" class="experience-section">
+  <div class="section-heading">
+    <h2>Experience</h2>
+    <p class="section-description">
+      My professional journey and the roles I've held along the way.
+    </p>
+  </div>
+
+  <ol class="experience-list">
+    {
+      experience.map((entry) => (
+        <li class="experience-entry">
+          <div class="experience-marker" aria-hidden="true" />
+
+          <div class="experience-content">
+            <h3 class="experience-company">{entry.company}</h3>
+
+            <div class="experience-roles">
+              {entry.roles.map((role) => (
+                <article class="experience-role">
+                  <div class="role-heading">
+                    <h4>{role.title}</h4>
+                    <span class="role-period">{role.period}</span>
+                  </div>
+
+                  <p class="role-type">{role.employmentType}</p>
+
+                  {role.description && (
+                    <p class="role-description">{role.description}</p>
+                  )}
+                </article>
+              ))}
+            </div>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</section>
+
+<style>
+  .experience-section {
+    padding-block: var(--space-20);
+    scroll-margin-top: 6rem;
+    width: 100%;
+    max-width: var(--content-width-sm);
+    margin: auto;
+  }
+
+  .section-heading {
+    margin-bottom: var(--space-8);
+  }
+
+  .section-description {
+    max-width: 36rem;
+    color: var(--color-muted-foreground);
+  }
+
+  .experience-list {
+    display: grid;
+    gap: var(--space-8);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .experience-entry {
+    position: relative;
+    display: grid;
+    grid-template-columns: 0.5rem minmax(0, 1fr);
+    gap: var(--space-4);
+  }
+
+  .experience-entry:not(:last-child)::before {
+    position: absolute;
+    top: 1rem;
+    bottom: calc(-1 * var(--space-8));
+    left: 0.25rem;
+    width: 1px;
+    background: var(--color-border);
+    content: "";
+    transform: translateX(-50%);
+  }
+
+  .experience-marker {
+    position: relative;
+    z-index: 1;
+    width: 0.5rem;
+    height: 0.5rem;
+    margin-top: 0.45rem;
+    border-radius: 50%;
+    background: var(--color-accent);
+  }
+
+  .experience-content {
+    min-width: 0;
+  }
+
+  .experience-company {
+    font-size: var(--text-xl);
+  }
+
+  .experience-roles {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .experience-role {
+    min-width: 0;
+  }
+
+  .role-heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-4);
+    font-family: var(--font-mono);
+  }
+
+  .role-heading h4 {
+    margin: 0;
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .role-period,
+  .role-type {
+    color: var(--color-muted-foreground);
+    font-size: var(--text-sm);
+  }
+
+  .role-type {
+    margin: var(--space-1) 0 0;
+  }
+
+  .role-description {
+    max-width: 42rem;
+    margin: var(--space-2) 0 0;
+    color: var(--color-muted-foreground);
+    line-height: 1.7;
+  }
+
+  @media (max-width: 480px) {
+    .experience-section {
+      padding-block: var(--space-16);
+      scroll-margin-top: 5rem;
+    }
+
+    .role-heading {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-1);
+    }
+  }
+</style>
