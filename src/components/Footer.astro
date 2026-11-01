@@ -60,6 +60,7 @@ const socialLinks = [
 <style>
   footer {
     padding: var(--space-20) var(--page-gutter);
+    margin-top: var(--space-20);
     border-top: var(--border-width) solid var(--color-border);
     background:
       radial-gradient(
@@ -105,7 +106,6 @@ const socialLinks = [
     align-items: center;
     gap: var(--space-3);
     color: var(--color-foreground);
-    font-family: var(--font-mono);
     font-size: var(--text-lg);
     text-decoration: none;
   }
@@ -127,7 +127,6 @@ const socialLinks = [
     display: block;
     padding-block: var(--space-2);
     color: var(--color-muted-foreground);
-    font-family: var(--font-mono);
     text-decoration: none;
   }
 
@@ -184,6 +183,7 @@ const socialLinks = [
   @media (max-width: 768px) {
     footer {
       padding-block: var(--space-16);
+      margin-top: var(--space-16);
     }
 
     .footer-inner {
