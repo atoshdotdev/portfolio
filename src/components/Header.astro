@@ -4,10 +4,10 @@ import HeaderLink from "./HeaderLink.astro";
 import Button from "./ui/Button.astro";
 
 const navLinks = [
-  { label: "About", href: "/#about", section: "about" },
-  { label: "Projects", href: "/#projects", section: "projects" },
-  { label: "Experience", href: "/#experience", section: "experience" },
-  { label: "Contact", href: "/#contact", section: "contact" },
+  { label: "About", href: "/#about" },
+  { label: "Projects", href: "/#projects" },
+  { label: "Experience", href: "/#experience" },
+  { label: "Contact", href: "/#contact" },
   { label: "Blog", href: "/blog" },
 ];
 ---
@@ -20,10 +20,8 @@ const navLinks = [
 
     <div class="internal-links">
       {
-        navLinks.map(({ label, href, section }) => (
-          <HeaderLink href={href} data-section-link={section}>
-            {label}
-          </HeaderLink>
+        navLinks.map(({ label, href }) => (
+          <HeaderLink href={href}>{label}</HeaderLink>
         ))
       }
     </div>
@@ -70,12 +68,8 @@ const navLinks = [
 
     <div class="mobile-menu" id="mobile-menu" hidden>
       {
-        navLinks.map(({ label, href, section }) => (
-          <HeaderLink
-            href={href}
-            data-section-link={section}
-            class="mobile-menu-link"
-          >
+        navLinks.map(({ label, href }) => (
+          <HeaderLink href={href} class="mobile-menu-link">
             {label}
             <svg
               xmlns="http://www.w3.org/2000/svg"
