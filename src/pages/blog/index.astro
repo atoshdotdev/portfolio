@@ -1,114 +1,159 @@
 ---
-import { Image } from 'astro:assets';
-import { getCollection } from 'astro:content';
-import BaseHead from '../../components/BaseHead.astro';
-import Footer from '../../components/Footer.astro';
-import FormattedDate from '../../components/FormattedDate.astro';
-import Header from '../../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import { getCollection } from "astro:content";
+import FormattedDate from "../../components/FormattedDate.astro";
+import DefaultLayout from "@/layouts/DefaultLayout.astro";
 
-const posts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+const posts = (await getCollection("blog")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<style>
-			main {
-				width: 960px;
-			}
-			ul {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 2rem;
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
-			}
-			ul li {
-				width: calc(50% - 1rem);
-			}
-			ul li * {
-				text-decoration: none;
-				transition: 0.2s ease;
-			}
-			ul li:first-child {
-				width: 100%;
-				margin-bottom: 1rem;
-				text-align: center;
-			}
-			ul li:first-child img {
-				width: 100%;
-			}
-			ul li:first-child .title {
-				font-size: 2.369rem;
-			}
-			ul li img {
-				margin-bottom: 0.5rem;
-				border-radius: 12px;
-			}
-			ul li a {
-				display: block;
-			}
-			.title {
-				margin: 0;
-				color: rgb(var(--black));
-				line-height: 1;
-			}
-			.date {
-				margin: 0;
-				color: rgb(var(--gray));
-			}
-			ul li a:hover h4,
-			ul li a:hover .date {
-				color: rgb(var(--accent));
-			}
-			ul a:hover img {
-				box-shadow: var(--box-shadow);
-			}
-			@media (max-width: 720px) {
-				ul {
-					gap: 0.5em;
-				}
-				ul li {
-					width: 100%;
-					text-align: center;
-				}
-				ul li:first-child {
-					margin-bottom: 0;
-				}
-				ul li:first-child .title {
-					font-size: 1.563em;
-				}
-			}
-		</style>
-	</head>
-	<body>
-		<Header />
-		<main>
-			<section>
-				<ul>
-					{
-						posts.map((post) => (
-							<li>
-								<a href={`/blog/${post.id}/`}>
-									{post.data.heroImage && (
-										<Image width={720} height={360} src={post.data.heroImage} alt="" />
-									)}
-									<h4 class="title">{post.data.title}</h4>
-									<p class="date">
-										<FormattedDate date={post.data.pubDate} />
-									</p>
-								</a>
-							</li>
-						))
-					}
-				</ul>
-			</section>
-		</main>
-		<Footer />
-	</body>
-</html>
+<DefaultLayout
+  title="Blog"
+  description="Notes and articles on software engineering, web development, artificial intelligence, and projects, ideas, and technologies I'm exploring."
+>
+  <section class="blog-index" aria-labelledby="blog-title">
+    <div class="blog-intro">
+      <h1 id="blog-title">Blog<span class="accent">.</span></h1>
+      <p class="intro-copy">
+        A collection of thoughts on software engineering, things I'm building,
+        technologies I'm exploring, and lessons learned along the way.
+      </p>
+    </div>
+
+    <span class="blog-list-heading">Posts</span>
+
+    <div class="post-divider"></div>
+
+    <ol class="post-list">
+      {
+        posts.map((post, index) => (
+          <li>
+            <a class="post-link" href={`/blog/${post.id}/`}>
+              <span class="post-number" aria-hidden="true">
+                {(index + 1).toString().padStart(2, "0")}
+              </span>
+              <span class="post-content">
+                <span class="post-meta">
+                  <FormattedDate date={post.data.pubDate} />
+                </span>
+                <span class="post-title">{post.data.title}</span>
+                <span class="post-description">{post.data.description}</span>
+              </span>
+            </a>
+
+            <div class="post-divider" />
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+</DefaultLayout>
+
+<style>
+  .blog-index {
+    width: 100%;
+    max-width: var(--content-width-md);
+    margin-inline: auto;
+    padding-block: var(--space-20);
+  }
+
+  .blog-intro {
+    max-width: 42rem;
+    margin-bottom: clamp(4rem, 10vw, 7rem);
+  }
+
+  .blog-list-heading,
+  .post-meta {
+    color: var(--color-primary);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .accent {
+    color: var(--color-primary);
+  }
+
+  .intro-copy {
+    max-width: 35rem;
+    margin: 0;
+    color: var(--color-muted-foreground);
+    font-size: var(--text-lg);
+  }
+
+  .blog-list-heading {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding-bottom: var(--space-4);
+  }
+
+  .post-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .post-divider {
+    width: 100%;
+    height: var(--border-width);
+    background: linear-gradient(90deg, var(--color-border), transparent);
+  }
+
+  .post-link {
+    display: grid;
+    grid-template-columns: 2rem minmax(0, 1fr);
+    align-items: start;
+    gap: var(--space-6);
+    padding-block: var(--space-8);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .post-number {
+    color: var(--color-muted-foreground);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+  }
+
+  .post-content {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .post-meta {
+    color: var(--color-muted-foreground);
+    font-size: var(--text-xs);
+  }
+
+  .post-title {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+  }
+
+  .post-description {
+    max-width: 38rem;
+    color: var(--color-muted-foreground);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .post-link:hover .post-title {
+      color: var(--color-primary);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .blog-index {
+      padding-block: var(--space-16);
+    }
+
+    .post-link {
+      gap: var(--space-3);
+      padding-block: var(--space-6);
+    }
+  }
+</style>

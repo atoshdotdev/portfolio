@@ -60,7 +60,6 @@ const socialLinks = [
 <style>
   footer {
     padding: var(--space-20) var(--page-gutter);
-    margin-top: var(--space-20);
     border-top: var(--border-width) solid var(--color-border);
     background:
       radial-gradient(
@@ -74,7 +73,7 @@ const socialLinks = [
   .footer-inner,
   .footer-meta {
     width: 100%;
-    max-width: var(--content-width-md);
+    max-width: var(--content-width-lg);
     margin-inline: auto;
   }
 
@@ -86,7 +85,6 @@ const socialLinks = [
   }
 
   .eyebrow {
-    margin-bottom: var(--space-3);
     color: var(--color-primary);
     font-family: var(--font-mono);
     font-size: var(--text-sm);
@@ -97,7 +95,6 @@ const socialLinks = [
 
   .contact-copy {
     max-width: 30rem;
-    margin-bottom: var(--space-6);
     color: var(--color-muted-foreground);
   }
 
@@ -125,6 +122,7 @@ const socialLinks = [
 
   .social-links a {
     display: block;
+    width: fit-content;
     padding-block: var(--space-2);
     color: var(--color-muted-foreground);
     text-decoration: none;
@@ -183,7 +181,6 @@ const socialLinks = [
   @media (max-width: 768px) {
     footer {
       padding-block: var(--space-16);
-      margin-top: var(--space-16);
     }
 
     .footer-inner {
