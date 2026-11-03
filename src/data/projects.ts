@@ -9,7 +9,7 @@ export type Project = {
   technologies: string[];
   image?: ImageMetadata;
   imageAlt?: string;
-  youtubeId?: string;
+  videoUrl?: string;
   projectUrl?: string;
   sourceUrl?: string;
 };
@@ -28,7 +28,7 @@ export const projects = [
       "Ollama",
       "Docker",
     ],
-    youtubeId: "psiYjUsigNg",
+    videoUrl: "https://media.atosh.dev/projects/ainews-demo.mp4",
     sourceUrl: "https://github.com/atoshdotdev/ai-news-intelligence-platform",
     image: ainewsImage,
     imageAlt: "AI News Intelligence Platform interface",
